@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Students</title>
+		<link rel="stylesheet" href="./style.css" />
+		<link rel="shortcut icon" href="./favicon.svg" type="image/x-icon" />
+		<script defer src="./script.js"></script>
+	</head>
+	<body>
+		<h1>Students</h1>
+		<h2>EPITA — Computer Science</h2>
+		<section>
+			<div id="student-list"></div>
+		</section>
+
+		<form id="studentForm">
+  <input placeholder="Name" id="name" />
+  <input placeholder="Email" id="email" />
+  <input placeholder="Major" id="major" />
+  <input placeholder="GPA" id="gpa" />
+  <button>Add</button>
+</form>
+
+<div id="editModal" style="display:none; position:fixed; top:20%; left:30%; background:white; padding:20px; border-radius:10px;">
+  <h3>Edit Student</h3>
+  <input id="editName" placeholder="Name"><br>
+  <input id="editEmail" placeholder="Email"><br>
+  <input id="editMajor" placeholder="Major"><br>
+  <input id="editGpa" placeholder="GPA"><br><br>
+  <button onclick="saveEdit()">Save</button>
+  <button onclick="closeEdit()">Cancel</button>
+</div>
+	</body>
+</html>
