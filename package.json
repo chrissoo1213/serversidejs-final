@@ -1,0 +1,30 @@
+{
+  "name": "01",
+  "version": "1.0.0",
+  "description": "Read a JSON file, transform its data, and write the result to a Markdown file — all using Node.js built-in modules, no `npm install` needed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "epita": "node index.js",
+    "dev": "nodemon solut/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/web-rest-api/serverSideJs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/web-rest-api/serverSideJs/issues"
+  },
+  "homepage": "https://github.com/web-rest-api/serverSideJs#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

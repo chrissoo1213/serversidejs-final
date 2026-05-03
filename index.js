@@ -1,37 +1,48 @@
-// required modules
-const fs = require("fs");
-const path = require("path");
+import express from "express" // new js
 
-console.log("running the app  ...");
+const express = require("express") // old js
 
-// Step 1: Read 'students.json' using fs.readFileSync
-// Pass 'utf-8' as the second argument so you get a text string, not raw binary
-// const studentsData = fs.readFileSync(???, 'utf-8');
 
-// Step 2: Parse the JSON string into a JavaScript array
-// const students = JSON.parse(???);
+const app = express()
+const port = 3000
 
-// Step 3: Start building your Markdown string
-// Add a title, the current date, and a summary showing the total number of students
-// let markdownContent = '# Student Report\n\n';
-// markdownContent += `Generated on: ${???}\n\n`;
-// markdownContent += `## Summary\n\nTotal Students: ${???}\n\n`;
+app.get("/", (req, res) => {
+	res.json({ msg: "Hello World!" })
+})
 
-// Step 4: Loop over the students and append each one's details to markdownContent
-// students.forEach((student) => {
-//   markdownContent += `### ${student.???}\n`;
-//   markdownContent += `- **Email:** ${student.???}\n`;
-//   markdownContent += `- **Major:** ${student.???}\n`;
-//   markdownContent += `- **GPA:** ${student.???}\n`;
-//   markdownContent += `- **ID:** ${student.???}\n\n`;
-// });
+app.listen(port, () => {
+	console.log(`Example app listening on port ${port}`)
+})
 
-// Step 5: Build the output path using path.join and __dirname
-// __dirname always points to the folder where this script lives
-// const outputPath = path.join(__dirname, 'student_report.md');
+// NODEMON
 
-// Step 6: Write your Markdown string to the output file
-// fs.writeFileSync(outputPath, markdownContent, 'utf-8');
+// send data to the exposed endpoints
+// import data from students.json and send it to the client when they hit the endpoint
+// use postman to send data to endpoints
 
-// Step 7: Confirm it worked
-// console.log(`Report generated: ${outputPath}`);
+// GET - retrieve data
+// POST - create new data
+// PUT - update existing data
+// DELETE - remove data
+// CRUD - create, read, update, delete
+
+// SEND DATA vs SEND ERROR
+// STATUS CODES - 200, 201, 400, 404
+// JSON - JavaScript Object Notation
+// res.json() - send JSON response
+// res.status() - set status code
+// res.send() - send response
+
+// TRY FRONTEND NOW before moving on
+// go to FONT folder and open index.html in the browser, check console for errors, fix them, and see the data being displayed
+
+// CORS - Cross-Origin Resource Sharing
+// npm i cors
+// app.use(cors())
+
+// REFACTORING
+// 1. Create a separate file for routes (e.g., routes.js)
+// 2. Create a separate file for controllers (e.g., controllers.js)
+// 3. Change commonJs to ES6 modules (e.g., import/export) - this will require adding "type": "module" in package.json
+
+// push to github and share the link
