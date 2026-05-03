@@ -7,6 +7,4 @@ const studentSchema = new mongoose.Schema({
   gpa: Number,
 });
 
-const Student = mongoose.model("Student", studentSchema);
-
-export default Student;
+export default mongoose.models.Student || mongoose.model("Student", studentSchema);
