@@ -1,12 +1,12 @@
 import {
-  readStudents,
+  readcourses,
   writeStudent,
-} from "../services/studentsService.js";
+} from "../services/coursesService.js";
 
 // ✅ correct export
-export const getStudents = async (req, res) => {
-  const students = await readStudents();
-  res.status(200).json(students);
+export const getcourses = async (req, res) => {
+  const courses = await readcourses();
+  res.status(200).json(courses);
 };
 
 export const addStudent = async (req, res) => {

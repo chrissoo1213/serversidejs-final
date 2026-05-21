@@ -1,7 +1,7 @@
 import Student from "../models/Student.js";
 
-// ✅ get all students
-export const readStudents = async () => {
+// ✅ get all courses
+export const readcourses = async () => {
   return await Student.find();
 };
 

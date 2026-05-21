@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import studentRoutes from "./routes/studentsRoute.js";
+import studentRoutes from "./routes/coursesRoute.js";
 import authRoutes from "./routes/authRoutes.js";
 import cors from "cors";
 
@@ -16,12 +16,12 @@ app.get("/", (req, res) => {
   res.json({ msg: "API is running" });
 });
 
-app.use("/students", studentRoutes);
+app.use("/courses", studentRoutes);
 app.use("/auth", authRoutes);
 
 // MongoDB connection
 mongoose
-  .connect("mongodb+srv://testuser:test123@cluster0.krzx6pw.mongodb.net/studentsDB")
+  .connect("mongodb+srv://testuser:test123@cluster0.krzx6pw.mongodb.net/coursesDB")
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 

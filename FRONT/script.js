@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/students";
+const API_URL = "http://localhost:3000/courses";
 
 // 🔐 paste your real token here
 const TOKEN = localStorage.getItem("token");
@@ -24,7 +24,7 @@ document.getElementById("studentForm").addEventListener("submit", async (e) => {
     gpa: parseFloat(gpa.value),
   };
 
-  await fetch("http://localhost:3000/students", {
+  await fetch("http://localhost:3000/courses", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -62,14 +62,14 @@ const createCard = (student) => {
 async function deleteStudent(id) {
 	const token = localStorage.getItem("token");
 
-	await fetch(`http://localhost:3000/students/${id}`, {
+	await fetch(`http://localhost:3000/courses/${id}`, {
 		method: "DELETE",
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
 	});
 
-	loadStudents();
+	loadcourses();
 }
 
 let currentId = null;
@@ -98,7 +98,7 @@ async function saveEdit() {
 		gpa: parseFloat(document.getElementById("editGpa").value),
 	};
 
-	await fetch(`http://localhost:3000/students/${currentId}`, {
+	await fetch(`http://localhost:3000/courses/${currentId}`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
@@ -108,10 +108,10 @@ async function saveEdit() {
 	});
 
 	closeEdit();
-	loadStudents();
+	loadcourses();
 }
 
-const loadStudents = async () => {
+const loadcourses = async () => {
   const studentList = document.getElementById("student-list");
 
   try {
@@ -123,11 +123,11 @@ const loadStudents = async () => {
 
     if (!res.ok) throw new Error("Unauthorized or server error");
 
-    const students = await res.json();
+    const courses = await res.json();
 
     studentList.innerHTML = "";
 
-    students.forEach((student) => {
+    courses.forEach((student) => {
       studentList.appendChild(createCard(student));
     });
 
@@ -137,7 +137,7 @@ const loadStudents = async () => {
   }
 };
 
-loadStudents();
+loadcourses();
 
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -173,7 +173,7 @@ if (form) {
 
 		const token = localStorage.getItem("token");
 
-		await fetch("http://localhost:3000/students", {
+		await fetch("http://localhost:3000/courses", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -182,7 +182,7 @@ if (form) {
 			body: JSON.stringify({ name, email, major, gpa }),
 		});
 
-		loadStudents();
+		loadcourses();
 	});
 }
 

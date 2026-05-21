@@ -1,16 +1,16 @@
 import express from "express";
 import {
-  getStudents,
+  getcourses,
   addStudent,
   deleteStudent,
   updateStudent,
   getStudentById
-} from "../controllers/studentsController.js";
+} from "../controllers/coursesController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 router.get("/:id", getStudentById);
-router.get("/", authMiddleware, getStudents);
+router.get("/", authMiddleware, getcourses);
 router.post("/", authMiddleware, addStudent);
 router.delete("/:id", authMiddleware, deleteStudent);
 router.put("/:id", authMiddleware, updateStudent);
