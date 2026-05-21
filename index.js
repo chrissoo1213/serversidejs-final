@@ -6,7 +6,7 @@ console.log("running the app...");
 
 // Step 1: Read JSON file
 const coursesData = fs.readFileSync(
-  path.join(__dirname, "courses.json"),
+  path.join(__dirname, "course.json"),
   "utf-8"
 );
 
@@ -14,7 +14,7 @@ const coursesData = fs.readFileSync(
 const courses = JSON.parse(coursesData);
 
 // Step 3: Build Markdown content
-let markdownContent = "# Student Report\n\n";
+let markdownContent = "# Course Report\n\n";
 markdownContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
 markdownContent += `## Summary\n\nTotal courses: ${courses.length}\n\n`;
 

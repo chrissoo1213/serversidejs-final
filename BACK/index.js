@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import studentRoutes from "./routes/coursesRoute.js";
+import CourseRoutes from "./routes/coursesRoute.js";
 import authRoutes from "./routes/authRoutes.js";
 import cors from "cors";
 
@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
   res.json({ msg: "API is running" });
 });
 
-app.use("/courses", studentRoutes);
+app.use("/courses", CourseRoutes);
 app.use("/auth", authRoutes);
 
 // MongoDB connection

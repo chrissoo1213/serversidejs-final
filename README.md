@@ -2,11 +2,11 @@
 
 ## Goal
 
-Build a REST API using Express.js that exposes student data through a clean 3-layer architecture: **routes → controllers → services**. Data is served from a hardcoded JavaScript file (`data/courses.js`).
+Build a REST API using Express.js that exposes Course data through a clean 3-layer architecture: **routes → controllers → services**. Data is served from a hardcoded JavaScript file (`data/course.js`).
 
 ## What you will build
 
-An HTTP server that responds to requests on `/courses` endpoints, returning data from `data/courses.js` through three separated layers.
+An HTTP server that responds to requests on `/courses` endpoints, returning data from `data/course.js` through three separated layers.
 
 ## Run it
 
@@ -30,9 +30,9 @@ BACK/
 ├── controllers/
 │   └── coursesController.js   ← handles req/res, delegates logic to services
 ├── services/
-│   └── coursesService.js      ← business logic, reads from data/courses.js
+│   └── coursesService.js      ← business logic, reads from data/course.js
 data/
-└── courses.js                 ← hardcoded student data (your "database")
+└── course.js                 ← hardcoded Course data (your "database")
 ```
 
 ## The 3 layers
@@ -41,11 +41,11 @@ data/
 |---|---|---|
 | **Route** | `routes/coursesRoute.js` | Declares endpoints (`GET /`, `GET /:id`, `POST /`, …) and points each to a controller function |
 | **Controller** | `controllers/coursesController.js` | Receives `req` and `res`, calls the service, returns a JSON response with the right status code |
-| **Service** | `services/coursesService.js` | Contains the logic — find a student, create one, etc. Throws errors when something goes wrong |
+| **Service** | `services/coursesService.js` | Contains the logic — find a Course, create one, etc. Throws errors when something goes wrong |
 
 ## Data source
 
-`data/courses.js` exports a plain JavaScript array that acts as an in-memory database:
+`data/course.js` exports a plain JavaScript array that acts as an in-memory database:
 
 ```js
 export const courses = [
@@ -60,8 +60,8 @@ export const courses = [
 | Method | Path | Description | Success status |
 |---|---|---|---|
 | `GET` | `/courses` | Return all courses | `200` |
-| `GET` | `/courses/:id` | Return one student by id | `200` |
-| `POST` | `/courses` | Create a new student from request body | `201` |
+| `GET` | `/courses/:id` | Return one Course by id | `200` |
+| `POST` | `/courses` | Create a new Course from request body | `201` |
 
 ## Key concepts
 
@@ -94,9 +94,9 @@ app.use(cors())  // allow all origins
 
 ## Steps
 
-1. **`index.js`** — require Express and `cors`, set up middleware (`express.json()`, `cors()`), mount the student router on `/courses`, start listening on port 3000
-2. **`services/coursesService.js`** — import `courses` from `data/courses.js`, write `findAllUsers()` (returns the array or throws), `findUser(id)` (finds by id or throws), and `createcourseservice(newStudent)` (pushes to the array)
-3. **`controllers/coursesController.js`** — import the service functions, write `getAllcourses`, `getStudentById`, and `createStudent` — each one calls the service inside a `try/catch` and sends the appropriate JSON response and status code
+1. **`index.js`** — require Express and `cors`, set up middleware (`express.json()`, `cors()`), mount the Course router on `/courses`, start listening on port 3000
+2. **`services/coursesService.js`** — import `courses` from `data/course.js`, write `findAllUsers()` (returns the array or throws), `findUser(id)` (finds by id or throws), and `createcourseservice(newCourse)` (pushes to the array)
+3. **`controllers/coursesController.js`** — import the service functions, write `getAllcourses`, `getCourseById`, and `createCourse` — each one calls the service inside a `try/catch` and sends the appropriate JSON response and status code
 4. **`routes/coursesRoute.js`** — create an Express `Router`, wire up `GET /`, `GET /:id`, and `POST /` to the controller functions, export the router
 
 ## ES6 modules
@@ -110,7 +110,7 @@ import { findAllUsers } from "../services/coursesService.js"
 
 // exporting
 export const getAllcourses = (req, res) => { ... }
-export default studentRouter
+export default CourseRouter
 ```
 
 ## Hints

@@ -1,11 +1,9 @@
-import Student from "../models/Student.js";
+import Course from "../models/Course.js";
 
-// ✅ get all courses
-export const readcourses = async () => {
-  return await Student.find();
+export const getCoursesService = async () => {
+  return await Course.find();
 };
 
-// ✅ create a new student
-export const writeStudent = async (student) => {
-  return await Student.create(student);
+export const addCourseService = async (data) => {
+  return await Course.create(data);
 };

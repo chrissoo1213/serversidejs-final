@@ -1,55 +1,26 @@
-import {
-  readcourses,
-  writeStudent,
-} from "../services/coursesService.js";
+import Course from "../models/Course.js";
 
-// ✅ correct export
-export const getcourses = async (req, res) => {
-  const courses = await readcourses();
-  res.status(200).json(courses);
+export const getCourses = async (req, res) => {
+  const courses = await Course.find();
+  res.json(courses);
 };
 
-export const addStudent = async (req, res) => {
-  const newStudent = req.body;
-
-  const savedStudent = await writeStudent(newStudent);
-
-  res.status(201).json({
-    message: "Student added",
-    student: savedStudent,
-  });
+export const addCourse = async (req, res) => {
+  const course = await Course.create(req.body);
+  res.status(201).json(course);
 };
 
-import Student from "../models/Student.js";
-
-export const deleteStudent = async (req, res) => {
-  console.log("DELETE ID:", req.params.id); // debug
-
-  await Student.findByIdAndDelete(req.params.id);
-
-  res.json({ message: "deleted" });
+export const deleteCourse = async (req, res) => {
+  await Course.findByIdAndDelete(req.params.id);
+  res.json({ message: "Course deleted" });
 };
 
-export const updateStudent = async (req, res) => {
-  const updated = await Student.findByIdAndUpdate(
+export const updateCourse = async (req, res) => {
+  const updated = await Course.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
   );
 
-  res.json({ message: "Student updated", student: updated });
-};
-
-export const getStudentById = async (req, res) => {
-  try {
-    const student = await Student.findById(req.params.id);
-
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-
-    res.json(student);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  res.json(updated);
 };

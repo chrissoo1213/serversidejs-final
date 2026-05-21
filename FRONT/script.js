@@ -1,118 +1,79 @@
 const API_URL = "http://localhost:3000/courses";
 
-// 🔐 paste your real token here
 const TOKEN = localStorage.getItem("token");
-const getInitials = (name) => {
-  if (!name) return "?"; // 👈 prevent crash
 
-  return name
+// ======================
+// HELPERS
+// ======================
+
+const getInitials = (title) => {
+  if (!title) return "C";
+
+  return title
     .split(" ")
     .map((part) => part[0])
     .join("")
     .toUpperCase();
 };
 
+// ======================
+// CREATE CARD
+// ======================
 
+const createCard = (course) => {
+  const card = document.createElement("div");
 
-document.getElementById("studentForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  card.className = "card";
 
-  const student = {
-    name: name.value,
-    email: email.value,
-    major: major.value,
-    gpa: parseFloat(gpa.value),
-  };
+  const title = course.title || "No title";
 
-  await fetch("http://localhost:3000/courses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
-    },
-    body: JSON.stringify(student),
-  });
+  card.innerHTML = `
+    <div class="card-avatar">
+      ${getInitials(title)}
+    </div>
 
-  location.reload();
-});
+    <div class="card-name">
+      ${title}
+    </div>
 
+    <div class="card-major">
+      Teacher: ${course.teacher || "Unknown"}
+    </div>
 
-const createCard = (student) => {
-	const card = document.createElement("div")
-	card.className = "card"
+    <div class="card-email">
+      ${course.description || "No description"}
+    </div>
 
-	const name = student.name || "No name"
+    <span class="card-gpa">
+      Credits ${course.credits ?? "N/A"}
+    </span>
 
-	card.innerHTML = `
-		<div class="card-avatar">${getInitials(name)}</div>
-		<div class="card-name">${name}</div>
-		<div class="card-major">${student.major || "No major"}</div>
-		<div class="card-email">${student.email}</div>
-		<span class="card-gpa">GPA ${student.gpa ?? "N/A"}</span>
+    <div style="margin-top:10px;">
+      <button onclick="deleteCourse('${course._id}')">
+        Delete
+      </button>
 
-		<div style="margin-top:10px;">
-			<button onclick="deleteStudent('${student._id}')">Delete</button>
-			<button onclick="openEdit('${student._id}', '${student.name}', '${student.email}', '${student.major}', '${student.gpa}')">Edit</button>
-		</div>
-	`
+      <button onclick="openEdit(
+        '${course._id}',
+        '${course.title || ""}',
+        '${course.teacher || ""}',
+        '${course.credits || ""}',
+        '${course.description || ""}'
+      )">
+        Edit
+      </button>
+    </div>
+  `;
 
-	return card
-}
+  return card;
+};
 
-async function deleteStudent(id) {
-	const token = localStorage.getItem("token");
+// ======================
+// LOAD COURSES
+// ======================
 
-	await fetch(`http://localhost:3000/courses/${id}`, {
-		method: "DELETE",
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-
-	loadcourses();
-}
-
-let currentId = null;
-
-function openEdit(id, name, email, major, gpa) {
-	currentId = id;
-
-	document.getElementById("editModal").style.display = "block";
-	document.getElementById("editName").value = name;
-	document.getElementById("editEmail").value = email;
-	document.getElementById("editMajor").value = major;
-	document.getElementById("editGpa").value = gpa;
-}
-
-function closeEdit() {
-	document.getElementById("editModal").style.display = "none";
-}
-
-async function saveEdit() {
-	const token = localStorage.getItem("token");
-
-	const updatedData = {
-		name: document.getElementById("editName").value,
-		email: document.getElementById("editEmail").value,
-		major: document.getElementById("editMajor").value,
-		gpa: parseFloat(document.getElementById("editGpa").value),
-	};
-
-	await fetch(`http://localhost:3000/courses/${currentId}`, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${token}`,
-		},
-		body: JSON.stringify(updatedData),
-	});
-
-	closeEdit();
-	loadcourses();
-}
-
-const loadcourses = async () => {
-  const studentList = document.getElementById("student-list");
+const loadCourses = async () => {
+  const courseList = document.getElementById("Course-list");
 
   try {
     const res = await fetch(API_URL, {
@@ -121,72 +82,194 @@ const loadcourses = async () => {
       },
     });
 
-    if (!res.ok) throw new Error("Unauthorized or server error");
+    if (!res.ok) {
+      throw new Error("Unauthorized or server error");
+    }
 
     const courses = await res.json();
 
-    studentList.innerHTML = "";
+    courseList.innerHTML = "";
 
-    courses.forEach((student) => {
-      studentList.appendChild(createCard(student));
+    courses.forEach((course) => {
+      courseList.appendChild(createCard(course));
     });
 
   } catch (error) {
-    studentList.innerHTML = `<p class="error">${error.message}</p>`;
+    courseList.innerHTML = `
+      <p class="error">${error.message}</p>
+    `;
+
     console.error(error);
   }
 };
 
-loadcourses();
+loadCourses();
 
+// ======================
+// ADD COURSE
+// ======================
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const res = await fetch("http://localhost:3000/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-
-  const data = await res.json();
-
-  localStorage.setItem("token", data.token);
-
-  window.location.href = "index.html";
-});
-
-
-const form = document.getElementById("student-form");
+const form = document.getElementById("Course-form");
 
 if (form) {
-	form.addEventListener("submit", async (e) => {
-		e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-		const name = form[0].value;
-		const email = form[1].value;
-		const major = form[2].value;
-		const gpa = parseFloat(form[3].value);
+    const title = document.getElementById("title").value;
+    const teacher = document.getElementById("teacher").value;
+    const credits = parseFloat(
+      document.getElementById("credits").value
+    );
 
-		const token = localStorage.getItem("token");
+    const description =
+      document.getElementById("description").value;
 
-		await fetch("http://localhost:3000/courses", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({ name, email, major, gpa }),
-		});
+    await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
 
-		loadcourses();
-	});
+      body: JSON.stringify({
+        title,
+        teacher,
+        credits,
+        description,
+      }),
+    });
+
+    form.reset();
+
+    loadCourses();
+  });
 }
 
-window.deleteStudent = deleteStudent;
+// ======================
+// DELETE COURSE
+// ======================
+
+async function deleteCourse(id) {
+  await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+    },
+  });
+
+  loadCourses();
+}
+
+// ======================
+// EDIT COURSE
+// ======================
+
+let currentId = null;
+
+function openEdit(id, title, teacher, credits, description) {
+  currentId = id;
+
+  document.getElementById("editModal").style.display =
+    "block";
+
+  document.getElementById("editTitle").value = title;
+
+  document.getElementById("editTeacher").value =
+    teacher;
+
+  document.getElementById("editCredits").value =
+    credits;
+
+  document.getElementById("editDescription").value =
+    description;
+}
+
+function closeEdit() {
+  document.getElementById("editModal").style.display =
+    "none";
+}
+
+async function saveEdit() {
+  const updatedData = {
+    title: document.getElementById("editTitle").value,
+
+    teacher:
+      document.getElementById("editTeacher").value,
+
+    credits: parseFloat(
+      document.getElementById("editCredits").value
+    ),
+
+    description:
+      document.getElementById("editDescription").value,
+  };
+
+  await fetch(`${API_URL}/${currentId}`, {
+    method: "PUT",
+
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${TOKEN}`,
+    },
+
+    body: JSON.stringify(updatedData),
+  });
+
+  closeEdit();
+
+  loadCourses();
+}
+
+// ======================
+// LOGIN
+// ======================
+
+const loginForm =
+  document.getElementById("loginForm");
+
+if (loginForm) {
+  loginForm.addEventListener(
+    "submit",
+    async (e) => {
+      e.preventDefault();
+
+      const email =
+        document.getElementById("email").value;
+
+      const password =
+        document.getElementById("password").value;
+
+      const res = await fetch(
+        "http://localhost:3000/auth/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      localStorage.setItem("token", data.token);
+
+      window.location.href = "index.html";
+    }
+  );
+}
+
+// ======================
+// GLOBALS
+// ======================
+
+window.deleteCourse = deleteCourse;
 window.openEdit = openEdit;
 window.saveEdit = saveEdit;
 window.closeEdit = closeEdit;
